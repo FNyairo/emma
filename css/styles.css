@@ -1047,7 +1047,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .skills-bento {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 70px;
+  grid-auto-rows: 82px;
   gap: 10px;
 }
 
@@ -1056,30 +1056,84 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.75rem;
+  padding: 0.85rem 1rem;
   border-radius: var(--radius-sm);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-mid);
   background: var(--surface);
   border: 1px solid var(--border);
   transition: all var(--transition);
   cursor: default;
+  line-height: 1.35;
 }
 
 .skill-cell:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: white;
-  transform: scale(1.03);
+  transform: scale(1.02);
+}
+.skill-cell:hover small { color: rgba(255,255,255,0.8); }
+
+/* Size variants */
+.skill-cell.c2r2 { grid-column: span 2; grid-row: span 2; font-size: 1rem; font-weight: 700; }
+.skill-cell.c2r1 { grid-column: span 2; }
+.skill-cell.c1r2 { grid-row: span 2; flex-direction: column; gap: 0.4rem; }
+.skill-cell.c1r1 { /* default */ }
+
+/* Inner layout for feature cells */
+.skill-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+.skill-icon { font-size: 1.6rem; line-height: 1; }
+.skill-cell small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
 }
 
-.skill-cell.lg { grid-column: span 2; grid-row: span 2; font-size: 0.95rem; font-weight: 600; }
-.skill-cell.md { grid-column: span 2; }
+/* Colour variants */
 .skill-cell.accent {
   background: var(--accent-glow);
-  border-color: rgba(82,183,136,0.3);
+  border-color: rgba(82,183,136,0.35);
   color: var(--accent);
+}
+.skill-cell.accent small { color: var(--accent); opacity: 0.75; }
+.skill-cell.accent-soft {
+  background: rgba(82,183,136,0.07);
+  border-color: rgba(82,183,136,0.2);
+  color: var(--text);
+}
+.skill-cell.lang {
+  font-size: 0.78rem;
+  gap: 0.3rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.skill-cell.lang small {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .skills-bento { grid-template-columns: repeat(3, 1fr); }
+  .skill-cell.c2r2 { grid-column: span 2; }
+  .skill-cell.c2r1 { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+  .skills-bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 70px; }
+  .skill-cell.c2r2 { grid-column: span 2; }
+  .skill-cell.c2r1 { grid-column: span 2; }
+  .skill-cell.c1r2 { grid-row: span 1; }
 }
 
 /* ─── AFFILIATION LOGOS ───────────────────────────────── */
@@ -1609,7 +1663,6 @@ textarea { resize: vertical; min-height: 130px; }
   .intro-grid { grid-template-columns: 1fr; gap: 2rem; }
   .blog-grid { grid-template-columns: 1fr 1fr; }
   .blog-card.featured { grid-column: span 2; }
-  .skills-bento { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -1641,9 +1694,7 @@ textarea { resize: vertical; min-height: 130px; }
   .section-header { flex-direction: column; align-items: flex-start; }
   .affil-grid { grid-template-columns: repeat(2, 1fr); }
   .affil-card.wide { grid-column: span 1; }
-  .skills-bento { grid-template-columns: repeat(2, 1fr); }
-  .skill-cell.lg { grid-column: span 2; }
-  .skill-cell.md { grid-column: span 2; }
+  .skills-bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 70px; }
   .form-grid { grid-template-columns: 1fr; }
   .form-group.full { grid-column: span 1; }
   .footer-inner { flex-direction: column; text-align: center; }

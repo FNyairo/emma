@@ -19,7 +19,7 @@
   }
 
   function initTheme() {
-    const saved = localStorage.getItem(THEME_KEY) || 'light';
+    const saved = localStorage.getItem(THEME_KEY) || 'academic';
     applyTheme(saved);
     document.querySelectorAll('.theme-btn').forEach(btn => {
       btn.addEventListener('click', () => applyTheme(btn.dataset.theme));
