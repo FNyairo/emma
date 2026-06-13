@@ -573,6 +573,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   width: 100%; height: 100%;
   object-fit: cover;
   object-position: center top;
+  border-radius: var(--radius);
 }
 
 /* Tagline Card */
@@ -1783,6 +1784,7 @@ textarea { resize: vertical; min-height: 130px; }
   object-fit: cover;
   transition: transform 0.45s ease;
   display: block;
+  border-radius: var(--radius) var(--radius) 0 0;
 }
 .engage-img--sm img { height: 160px; }
 .engage-card--featured .engage-img img { height: 300px; }
