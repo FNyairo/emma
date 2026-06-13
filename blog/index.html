@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Blog by Dr. Emma Nkonoki — reflections on ICT4D, East Africa, innovation, and life between two continents." />
+  <title>Blog — Dr. Emma Nkonoki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-logo">Emma <span>Nkonoki</span></a>
+    <ul class="nav-links" role="list">
+      <li><a href="../index.html">Home</a></li>
+      <li class="has-dropdown"><a href="../research.html">Research</a>
+        <ul class="nav-dropdown" role="menu" aria-label="Research submenu">
+          <li><a href="../research.html#projects">Current Research</a></li>
+          <li><a href="../research.html#publications">Publications</a></li>
+        </ul>
+      </li>
+      <li><a href="../resume.html">CV</a></li>
+      <li class="has-dropdown"><a href="../activities.html">Networks</a>
+        <ul class="nav-dropdown" role="menu" aria-label="Networks submenu">
+          <li><a href="../activities.html#activities">Activities</a></li>
+          <li><a href="../activities.html#affiliations">Affiliations</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown"><a href="../consultancies.html">Consultancies</a>
+        <ul class="nav-dropdown" role="menu" aria-label="Consultancies submenu">
+          <li><a href="../consultancies.html#services">Services</a></li>
+          <li><a href="../consultancies.html#teaching">Teaching</a></li>
+        </ul>
+      </li>
+      <li><a href="index.html" class="active">Blog</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="theme-switcher" role="group" aria-label="Select theme">
+        <button class="theme-btn active" data-theme="light">Light</button>
+        <button class="theme-btn" data-theme="dark">Dark</button>
+        <button class="theme-btn" data-theme="academic">Academic</button>
+      </div>
+      <a href="#" class="nav-cta">↓ CV</a>
+    </div>
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu" role="menu">
+  <a href="../index.html" role="menuitem">Home</a>
+  <a href="../research.html" role="menuitem">Research</a>
+  <a href="../research.html#projects" role="menuitem" class="nav-sub-link">↳ Current Research</a>
+  <a href="../research.html#publications" role="menuitem" class="nav-sub-link">↳ Publications</a>
+  <a href="../resume.html" role="menuitem">CV & Experience</a>
+  <a href="../activities.html" role="menuitem">Networks</a>
+  <a href="../activities.html#activities" role="menuitem" class="nav-sub-link">↳ Activities</a>
+  <a href="../activities.html#affiliations" role="menuitem" class="nav-sub-link">↳ Affiliations</a>
+  <a href="../consultancies.html" role="menuitem">Consultancies</a>
+  <a href="../consultancies.html#services" role="menuitem" class="nav-sub-link">↳ Services</a>
+  <a href="../consultancies.html#teaching" role="menuitem" class="nav-sub-link">↳ Teaching</a>
+  <a href="index.html" role="menuitem">Blog</a>
+  <a href="../contact.html" role="menuitem">Contact</a>
+  <div style="border-top:1px solid var(--border-light);padding-top:1rem;margin-top:0.5rem;display:flex;gap:6px;">
+    <button class="theme-btn" data-theme="light" style="flex:1;border:1px solid var(--border);border-radius:8px;padding:0.4rem;">Light</button>
+    <button class="theme-btn" data-theme="dark"  style="flex:1;border:1px solid var(--border);border-radius:8px;padding:0.4rem;">Dark</button>
+    <button class="theme-btn" data-theme="academic" style="flex:1;border:1px solid var(--border);border-radius:8px;padding:0.4rem;">Academic</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE HEADER ═══ -->
+<header class="page-header" aria-labelledby="page-heading">
+  <!-- blog is one level deep, so path goes up one folder -->
+  <div class="page-header-photo right" style="background-image:url('../assets/images/headers/blog.jpg')" aria-hidden="true"></div>
+  <div class="container">
+    <span class="section-label reveal">Blog</span>
+    <h1 class="section-title reveal" id="page-heading" style="font-size:clamp(2.2rem,4vw,3.5rem);">
+      Notes from the Field
+    </h1>
+    <p class="section-subtitle reveal reveal-delay-1">
+      Reflections on ICT4D, inclusive innovation, East Africa, and life built across two continents.
+      Short posts, honest observations, and research in progress.
+    </p>
+  </div>
+</header>
+
+<!-- ═══ BLOG POSTS ═══ -->
+<section class="section" aria-label="Blog posts">
+  <div class="container">
+    <div id="blog-posts" class="blog-grid" role="feed" aria-label="Blog post list" aria-busy="true">
+      <!-- Posts loaded dynamically from posts.json -->
+      <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 1rem;display:block;animation:spin 1s linear infinite;" aria-hidden="true">
+          <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-opacity="0.3"/>
+          <path d="M21 12a9 9 0 00-9-9"/>
+        </svg>
+        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+        Loading posts…
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SUBSCRIBE / CONTACT ═══ -->
+<section class="section" style="padding-top:0;" aria-label="Stay connected">
+  <div class="container">
+    <div class="glass" style="padding:3rem;text-align:center;max-width:560px;margin:0 auto;">
+      <div style="font-size:2rem;margin-bottom:1rem;" aria-hidden="true">✉️</div>
+      <h2 style="font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--text);margin-bottom:0.75rem;">
+        Stay Connected
+      </h2>
+      <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:1.5rem;">
+        Want to be notified when new posts appear? Drop Emma a message with "Blog Updates" in the subject line.
+      </p>
+      <a href="../contact.html" style="display:inline-flex;align-items:center;gap:6px;padding:0.75rem 1.75rem;background:var(--accent);color:white;border-radius:12px;font-weight:600;font-size:0.9rem;">
+        Get in Touch →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Emma <span>Nkonoki</span></div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="../index.html">Home</a>
+        <a href="../research.html">Research</a>
+        <a href="../resume.html">CV</a>
+        <a href="../activities.html">Networks</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2025 Emma Nkonoki · University of Turku</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

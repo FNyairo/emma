@@ -1,0 +1,42 @@
+[
+  {
+    "id": "step-ea-reflections",
+    "title": "Reflections from the STEP-EA Project: Teacher Well-being in East Africa",
+    "date": "May 2025",
+    "excerpt": "What does it mean to truly support a teacher in rural Tanzania or Kenya? The STEP-EA project taught me that well-being is not a soft concept — it is the foundation of every effective classroom. Here are some early reflections from the field.",
+    "tags": ["STEP-EA", "East Africa", "Teacher Well-being", "ICT4D"],
+    "featured": true
+  },
+  {
+    "id": "silicon-dar-startups",
+    "title": "Growing Tech Startups in Dar es Salaam: What Silicon Dar Is Getting Right",
+    "date": "April 2025",
+    "excerpt": "Tanzania's startup ecosystem is maturing. My recent research into Silicon Dar revealed both exciting momentum and structural challenges that need urgent attention from policy makers and investors alike.",
+    "tags": ["Innovation", "Tanzania", "Startups", "Silicon Dar"],
+    "featured": false
+  },
+  {
+    "id": "ict-grassroots-iringa",
+    "title": "ICT and Grassroots Entrepreneurship: Evidence from Iringa, Tanzania",
+    "date": "February 2025",
+    "excerpt": "Our cross-sectional study in Iringa Region found that mobile technology is reshaping how small-scale entrepreneurs connect to markets, access information, and build peer networks — often in ways that formal support structures have overlooked.",
+    "tags": ["ICT4D", "Entrepreneurship", "Iringa", "Tanzania", "Research"],
+    "featured": false
+  },
+  {
+    "id": "phd-journey",
+    "title": "Completing My PhD: What I Learned About Patience, Purpose, and Research",
+    "date": "January 2025",
+    "excerpt": "After six years of research, fieldwork, writing, and revising — I defended my dissertation in 2025. Here is a personal reflection on what the journey taught me about academic life, African development, and myself.",
+    "tags": ["PhD", "Academic Life", "Personal", "Research Journey"],
+    "featured": false
+  },
+  {
+    "id": "ngos-innovation-ecosystems",
+    "title": "Why We Still Need NGOs in Innovation Ecosystems",
+    "date": "November 2024",
+    "excerpt": "When I presented at UNU-WIDER in 2020, I argued that NGOs are essential to ensuring no one is left behind in technology-driven development. Five years later, my conviction has only deepened — and the evidence has grown.",
+    "tags": ["NGOs", "Innovation", "Inclusive Development", "East Africa"],
+    "featured": false
+  }
+]

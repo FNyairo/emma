@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Dr. Emma Nkonoki's research projects in ICT4D, inclusive innovation ecosystems, and peer-reviewed publications." />
+  <title>Research — Dr. Emma Nkonoki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ── PUB BADGE — EXTRA TYPES ─────────────────────────── */
+    .pub-badge.review {
+      background: rgba(234, 160, 50, 0.15);
+      color: #9a6800;
+    }
+    [data-theme="dark"] .pub-badge.review { color: #f5b942; }
+
+    .pub-badge.hamk {
+      background: rgba(82,183,136,0.15);
+      color: var(--tz-forest);
+    }
+
+    /* ── PUBLICATION POPUP OVERLAY ───────────────────────── */
+    .pub-popup-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .pub-popup-backdrop.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    #pub-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -48%) scale(0.96);
+      z-index: 900;
+      width: min(780px, calc(100vw - 2rem));
+      max-height: min(82vh, 640px);
+      overflow-y: auto;
+      background: var(--surface);
+      backdrop-filter: blur(32px) saturate(180%);
+      -webkit-backdrop-filter: blur(32px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 1.8rem 2rem 1.6rem;
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(82,183,136,0.1);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    #pub-popup.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    #pub-popup::-webkit-scrollbar { width: 5px; }
+    #pub-popup::-webkit-scrollbar-track { background: transparent; }
+    #pub-popup::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .pub-popup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .pub-popup-type-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pub-popup-close {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s, color 0.15s;
+    }
+    .pub-popup-close:hover { background: var(--border-light); color: var(--text); }
+
+    #pub-popup h3 {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.45;
+      margin-bottom: 1.25rem;
+    }
+
+    .pub-popup-section {
+      margin-bottom: 1.1rem;
+      padding-bottom: 1.1rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .pub-popup-section:last-of-type { border-bottom: none; margin-bottom: 0.5rem; }
+
+    .pub-popup-section strong {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .pub-popup-section p {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .pub-popup-themes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 0.6rem;
+    }
+    .pub-popup-theme-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      background: var(--accent-glow);
+      color: var(--tz-mid);
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .pub-popup-takeaways {
+      margin: 0;
+      padding-left: 1.1rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .pub-popup-takeaways li { margin-bottom: 0.25rem; }
+
+    .pub-popup-apa {
+      font-size: 0.82rem !important;
+      color: var(--text-muted) !important;
+      font-style: italic;
+      user-select: all;
+    }
+
+    .pub-popup-footer {
+      margin-top: 1.2rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .pub-popup-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.6rem 1.2rem;
+      background: var(--accent);
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .pub-popup-link:hover { opacity: 0.85; }
+    .pub-popup-link.hidden { display: none; }
+
+    /* pub card — cursor pointer to hint it's clickable */
+    .pub-card { cursor: pointer; }
+    .pub-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo">Emma <span>Nkonoki</span></a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li class="has-dropdown"><a href="research.html" class="active">Research</a>
+        <ul class="nav-dropdown" role="menu" aria-label="Research submenu">
+          <li><a href="research.html#projects">Current Research</a></li>
+          <li><a href="research.html#publications">Publications</a></li>
+        </ul>
+      </li>
+      <li><a href="resume.html">CV</a></li>
+      <li class="has-dropdown"><a href="activities.html">Networks</a>
+        <ul class="nav-dropdown" role="menu" aria-label="Networks submenu">
+          <li><a href="activities.html#activities">Activities</a></li>
+          <li><a href="activities.html#affiliations">Affiliations</a></li>
+        </ul>
+      </li>
+      <li class="has-dropdown"><a href="consultancies.html">Consultancies</a>
+        <ul class="nav-dropdown" role="menu" aria-label="Consultancies submenu">
+          <li><a href="consultancies.html#services">Services</a></li>
+          <li><a href="consultancies.html#teaching">Teaching</a></li>
+        </ul>
+      </li>
+      <li><a href="blog/index.html">Blog</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="theme-switcher" role="group" aria-label="Select theme">
+        <button class="theme-btn active" data-theme="light">Light</button>
+        <button class="theme-btn" data-theme="dark">Dark</button>
+        <button class="theme-btn" data-theme="academic">Academic</button>
+      </div>
+      <a href="#" class="nav-cta">↓ CV</a>
+    </div>
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu" role="menu">
+  <a href="index.html" role="menuitem">Home</a>
+  <a href="research.html" role="menuitem">Research</a>
+  <a href="research.html#projects" role="menuitem" class="nav-sub-link">↳ Current Research</a>
+  <a href="research.html#publications" role="menuitem" class="nav-sub-link">↳ Publications</a>
+  <a href="resume.html" role="menuitem">CV &amp; Experience</a>
+  <a href="activities.html" role="menuitem">Networks</a>
+  <a href="activities.html#activities" role="menuitem" class="nav-sub-link">↳ Activities</a>
+  <a href="activities.html#affiliations" role="menuitem" class="nav-sub-link">↳ Affiliations</a>
+  <a href="consultancies.html" role="menuitem">Consultancies</a>
+  <a href="consultancies.html#services" role="menuitem" class="nav-sub-link">↳ Services</a>
+  <a href="consultancies.html#teaching" role="menuitem" class="nav-sub-link">↳ Teaching</a>
+  <a href="blog/index.html" role="menuitem">Blog</a>
+  <a href="contact.html" role="menuitem">Contact</a>
+  <div style="border-top:1px solid var(--border-light);padding-top:1rem;margin-top:0.5rem;display:flex;gap:6px;">
+    <button class="theme-btn" data-theme="light" style="flex:1;border:1px solid var(--border);border-radius:8px;padding:0.4rem;">Light</button>
+    <button class="theme-btn" data-theme="dark"  style="flex:1;border:1px solid var(--border);border-radius:8px;padding:0.4rem;">Dark</button>
+    <button class="theme-btn" data-theme="academic" style="flex:1;border:1px solid var(--border);border-radius:8px;padding:0.4rem;">Academic</button>
+  </div>
+</div>
+
+<!-- ═══ PAGE HEADER ═══ -->
+<header class="page-header" aria-labelledby="page-heading">
+  <div class="page-header-photo right" style="background-image:url('assets/images/headers/research.jpg')" aria-hidden="true"></div>
+  <div class="container">
+    <span class="section-label reveal">Research</span>
+    <h1 class="section-title reveal" id="page-heading" style="font-size:clamp(2.2rem,4vw,3.5rem);max-width:700px;">
+      Inclusive Innovation at the Grassroots
+    </h1>
+    <p class="section-subtitle reveal reveal-delay-1">
+      Exploring how ICT empowers low-income entrepreneurs and educators across East Africa —
+      from national innovation policy to local practice in community hubs.
+    </p>
+  </div>
+</header>
+
+<!-- ═══ CURRENT PROJECTS ═══ -->
+<section id="projects" class="section" aria-label="Current research projects">
+  <div class="container">
+    <div class="section-header reveal">
+      <div>
+        <span class="section-label">Projects</span>
+        <h2 class="section-title">Current Research</h2>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Featured: XR Tanzania -->
+      <article class="project-card glass featured reveal" aria-label="XR Tanzania research project">
+        <div class="project-img-slot" title="Replace with XR Tanzania project photo">
+          <span class="project-img-slot-icon">🥽</span>
+          <span class="project-img-slot-label">📷 Add project photo</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="project-tag">🔬 Active</span>
+          <span class="project-tag" style="background:var(--border-light);color:var(--text-muted);">⚠ Placeholder</span>
+        </div>
+        <h3>XR Tanzania — Extended Reality in Education</h3>
+        <p>
+          <em>[PLACEHOLDER — Replace with the real project description when confirmed.]</em><br><br>
+          This project investigates the feasibility and impact of Extended Reality (XR) technologies — encompassing
+          Virtual Reality, Augmented Reality, and Mixed Reality — in secondary and vocational education settings
+          in Tanzania. Drawing on participatory design methods, the study aims to understand how XR can bridge
+          resource gaps and provide immersive, equitable learning experiences for students who lack access
+          to physical labs or textbooks. Initial fieldwork is planned for the Iringa and Dar es Salaam regions.
+        </p>
+        <div class="project-meta">
+          <span class="project-status">
+            <span class="status-dot" aria-hidden="true"></span> Ongoing
+          </span>
+          <span>📍 Tanzania · University of Turku</span>
+          <span>🗓 2025 –</span>
+        </div>
+      </article>
+
+      <!-- STEP-EA -->
+      <article class="project-card glass reveal reveal-delay-1" aria-label="STEP-EA project">
+        <div class="project-img-slot" title="Replace with STEP-EA project photo">
+          <span class="project-img-slot-icon">👩‍🏫</span>
+          <span class="project-img-slot-label">📷 Add project photo</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="project-tag">📋 Active</span>
+          <span class="project-tag" style="background:var(--border-light);color:var(--text-muted);">⚠ Placeholder</span>
+        </div>
+        <h3>STEP-EA — Supporting Teachers in East Africa</h3>
+        <p>
+          <em>[PLACEHOLDER — Replace with the real project description.]</em><br><br>
+          STEP-EA is a capacity-building initiative focused on teacher well-being, digital pedagogical development,
+          and professional support networks across Kenya, Tanzania, and Uganda. The project explores how
+          peer-learning models and mobile platforms can be deployed to improve classroom outcomes in
+          under-resourced schools.
+        </p>
+        <div class="project-meta">
+          <span class="project-status">
+            <span class="status-dot" aria-hidden="true"></span> Ongoing
+          </span>
+          <span>📍 East Africa</span>
+          <span>🗓 2024 –</span>
+        </div>
+      </article>
+
+      <!-- ECE Rwanda -->
+      <article class="project-card glass reveal reveal-delay-2" aria-label="ECE Rwanda advisory">
+        <div class="project-img-slot" title="Replace with ECE Rwanda project photo">
+          <span class="project-img-slot-icon">🧒</span>
+          <span class="project-img-slot-label">📷 Add project photo</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="project-tag">✅ Advisory</span>
+          <span class="project-tag" style="background:var(--border-light);color:var(--text-muted);">⚠ Placeholder</span>
+        </div>
+        <h3>ECE Rwanda — Early Childhood Advisory</h3>
+        <p>
+          <em>[PLACEHOLDER — Replace with the real project description.]</em><br><br>
+          Advisory engagement supporting early childhood education policy in Rwanda, including curriculum
+          framework development, teacher training methodology, and cross-country comparison with ECE
+          approaches in Tanzania and Kenya.
+        </p>
+        <div class="project-meta">
+          <span class="project-status">
+            <span class="status-dot inactive" aria-hidden="true"></span> Advisory
+          </span>
+          <span>📍 Rwanda</span>
+          <span>🗓 2023 – 2025</span>
+        </div>
+      </article>
+
+      <!-- PhD Research (completed) -->
+      <article class="project-card glass reveal reveal-delay-3" aria-label="PhD dissertation project">
+        <div class="project-img-slot" style="border-style:solid;border-color:rgba(82,183,136,0.4);">
+          <img src="assets/images/emma-phd.jpg" alt="Dr. Emma Nkonoki at her PhD graduation, University of Turku 2025" />
+        </div>
+        <span class="project-tag" style="background:rgba(82,183,136,0.2);color:var(--tz-mid);">🎓 Completed · 2025</span>
+        <h3>PhD Dissertation — Grassroots ICT Innovation in East Africa</h3>
+        <p>
+          Article dissertation exploring how ICT fosters inclusive innovation among low-income entrepreneurs
+          in Tanzania and broader East Africa. Combines qualitative fieldwork in innovation hubs, policy
+          analysis, and case studies from Iringa, Silicon Dar, and Zanzibar.
+        </p>
+        <div class="project-meta">
+          <span class="project-status">
+            <span class="status-dot inactive" aria-hidden="true"></span> Completed
+          </span>
+          <span>📍 University of Turku</span>
+          <span>🗓 2019 – 2025</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PUBLICATIONS ═══ -->
+<section id="publications" class="section" style="padding-top:0;" aria-label="Publications">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <div>
+        <span class="section-label">Publications</span>
+        <h2 class="section-title">All Publications</h2>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);max-width:320px;text-align:right;line-height:1.6;">
+        Click any card to see summary, key takeaways, and full APA citation.
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="pub-filters reveal reveal-delay-1" role="group" aria-label="Filter publications">
+      <button class="pub-filter-btn active" data-filter="all">All</button>
+      <button class="pub-filter-btn" data-filter="journal">Journal Articles</button>
+      <button class="pub-filter-btn" data-filter="conf">Conference Papers</button>
+      <button class="pub-filter-btn" data-filter="thesis">Dissertation</button>
+      <button class="pub-filter-btn" data-filter="review">Under Review</button>
+      <button class="pub-filter-btn" data-filter="2026">2026</button>
+      <button class="pub-filter-btn" data-filter="2025">2025</button>
+      <button class="pub-filter-btn" data-filter="2024">2024</button>
+      <button class="pub-filter-btn" data-filter="2021">2021</button>
+      <button class="pub-filter-btn" data-filter="2019">2019</button>
+    </div>
+
+    <div class="pubs-grid">
+
+      <!-- ── 2026 PUBLICATIONS ───────────────────────────── -->
+
+      <article class="pub-card glass reveal" data-year="2026" data-type="journal" data-pub-id="pub-2026-a" tabindex="0" role="button" aria-label="Click to view details: Inclusive Digital Learning" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge hamk">HAMK Pilkku</span>
+          <span class="pub-badge year">2026</span>
+        </div>
+        <h4>Inclusive Digital Learning: Teacher and Student Perspectives in East African TVET Contexts</h4>
+        <p class="pub-venue">HAMK Pilkku</p>
+        <p class="pub-authors">Nkonoki, Emma</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-1" data-year="2026" data-type="journal" data-pub-id="pub-2026-b" tabindex="0" role="button" aria-label="Click to view details: From Swahili to Screens" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge hamk">HAMK Pilkku</span>
+          <span class="pub-badge year">2026</span>
+        </div>
+        <h4>From Swahili to Screens: Overcoming Digital Literacy Obstacles in Tanzania</h4>
+        <p class="pub-venue">HAMK Pilkku</p>
+        <p class="pub-authors">Nkonoki, Emma; Meena, W.</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-2" data-year="2026" data-type="review" data-pub-id="pub-review-c" tabindex="0" role="button" aria-label="Click to view details: AI Entered the Chat" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge review">Under Review</span>
+          <span class="pub-badge year">2026</span>
+        </div>
+        <h4>AI Entered the Chat: Is It Too Much Too Soon for East Africa's Classrooms?</h4>
+        <p class="pub-venue">HAMK Pilkku (Under review, March 2026)</p>
+        <p class="pub-authors">Nkonoki, Emma</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <!-- ── 2025 PUBLICATIONS ───────────────────────────── -->
+
+
+      <!-- ── 2025 PUBLICATIONS ───────────────────────────── -->
+
+      <article class="pub-card glass reveal" data-year="2025" data-type="journal" data-pub-id="pub-2025-a" tabindex="0" role="button" aria-label="Click to view details: ICT Iringa grassroots entrepreneurship" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge journal">Journal</span>
+          <span class="pub-badge year">2025</span>
+        </div>
+        <h4>Exploring the Role of ICT in Empowering Grassroots Innovation and Entrepreneurship: A Cross-Sectional Study of Iringa Region in Tanzania</h4>
+        <p class="pub-venue">The African Journal of Information Systems</p>
+        <p class="pub-authors">Nkonoki, Emma; Kateule, Ruthbetha; Leppänen, Ville</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-1" data-year="2025" data-type="conf" data-pub-id="pub-2025-b" tabindex="0" role="button" aria-label="Click to view details: Silicon Dar startups" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-badge year">2025</span>
+        </div>
+        <h4>Exploring the Challenges of Growing Technology Startups: A Case of Silicon Dar</h4>
+        <p class="pub-venue">IST-Africa</p>
+        <p class="pub-authors">Nkonoki, Emma; Bakari, Abubakar</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-2" data-year="2025" data-type="thesis" data-pub-id="pub-2025-c" tabindex="0" role="button" aria-label="Click to view details: PhD Dissertation" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge thesis">Dissertation</span>
+          <span class="pub-badge year">2025</span>
+        </div>
+        <h4>Fostering Inclusive Innovations by Using ICT to Empower Grassroots Entrepreneurs in East Africa</h4>
+        <p class="pub-venue">Article Dissertation — University of Turku</p>
+        <p class="pub-authors">Nkonoki, Emma</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal" data-year="2025" data-type="review" data-pub-id="pub-review-a" tabindex="0" role="button" aria-label="Click to view details: Advancing Innovation in HLIs" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge review">Under Review</span>
+          <span class="pub-badge year">2025</span>
+        </div>
+        <h4>Advancing Innovation in Higher Learning Institutions: Case Studies and Best Practices</h4>
+        <p class="pub-venue">Under review (October 2025)</p>
+        <p class="pub-authors">Nkonoki, Emma; Kateule, Ruthbetha; Machuve, Juliana; Leppänen, Ville</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-1" data-year="2025" data-type="review" data-pub-id="pub-review-b" tabindex="0" role="button" aria-label="Click to view details: Software Startups Technology District" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge review">Under Review</span>
+          <span class="pub-badge year">2025</span>
+        </div>
+        <h4>Exploring the Growth of Software Startups in the Emerging Technology District of Dar es Salaam</h4>
+        <p class="pub-venue">Under review (December 2025)</p>
+        <p class="pub-authors">Nkonoki, Emma; Makundi, Hezron; Leppänen, Ville</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <!-- ── 2024 PUBLICATIONS ───────────────────────────── -->
+
+      <article class="pub-card glass reveal" data-year="2024" data-type="journal" data-pub-id="pub-2024-a" tabindex="0" role="button" aria-label="Click to view details: Inclusive innovation processes Tanzania" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge journal">Journal</span>
+          <span class="pub-badge year">2024</span>
+        </div>
+        <h4>Inclusive Innovation Processes in Tanzania: From National Policies to Local Practices in Innovation Hubs</h4>
+        <p class="pub-venue">African Journal of Innovation, Science, Technology and Development</p>
+        <p class="pub-authors">Hooli, Lauri; Nkonoki, Emma; Leppänen, Ville</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-1" data-year="2024" data-type="journal" data-pub-id="pub-2024-b" tabindex="0" role="button" aria-label="Click to view details: Mobile phones motorcycle taxi Dar es Salaam" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge journal">Journal</span>
+          <span class="pub-badge year">2024</span>
+        </div>
+        <h4>A Qualitative Assessment of the Role of Mobile Phones in Motorcycle Taxi Service in Dar es Salaam</h4>
+        <p class="pub-venue">Journal of Transportation Planning and Technology</p>
+        <p class="pub-authors">Nkonoki, Emma; Hamza, Vedasto</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-2" data-year="2024" data-type="conf" data-pub-id="pub-2024-c" tabindex="0" role="button" aria-label="Click to view details: Geospatial Zanzibar" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-badge year">2024</span>
+        </div>
+        <h4>The Contribution of Higher Learning Institutions in the Geospatial Ecosystem in Zanzibar: Current Situation and Future Direction</h4>
+        <p class="pub-venue">ICERI 2024</p>
+        <p class="pub-authors">Bakar, A.; Hamad, M.; Nkonoki, E.; Khatib, M.</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal" data-year="2024" data-type="conf" data-pub-id="pub-2024-d" tabindex="0" role="button" aria-label="Click to view details: Multi-competence internship model ICL2024" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-badge year">2024</span>
+        </div>
+        <h4>Towards a Multi-Competence Based Learning Internship Model: A Problem-Based Approach</h4>
+        <p class="pub-venue">ICL2024 — Interactive Collaborative Learning, Tallinn · Springer</p>
+        <p class="pub-authors">Bakari, Abubakar; Nkonoki, Emma; Yahya, Badru; Khatib, Marry; Hamad, Massoud</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <!-- ── 2021 PUBLICATION ────────────────────────────── -->
+
+      <article class="pub-card glass reveal" data-year="2021" data-type="chapter" data-pub-id="pub-2021-a" tabindex="0" role="button" aria-label="Click to view details: Evolution Tanzanian Innovation Ecosystem" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge chapter">Book Chapter</span>
+          <span class="pub-badge year">2021</span>
+        </div>
+        <h4>Evolution of the Tanzanian Innovation Ecosystem</h4>
+        <p class="pub-venue">Business to Business Marketing: How to Understand and Succeed in Business (E-book)</p>
+        <p class="pub-authors">Nkonoki, Emma</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <!-- ── 2019 PUBLICATIONS ───────────────────────────── -->
+
+      <article class="pub-card glass reveal" data-year="2019" data-type="conf" data-pub-id="pub-2019-a" tabindex="0" role="button" aria-label="Click to view details: CERID Smart MicroGrid" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-badge year">2019</span>
+        </div>
+        <h4>Creation of CERID: Challenge, Education, Research, Innovation, and Deployment 'In the Context of Smart MicroGrid'</h4>
+        <p class="pub-venue">IST-Africa 2019</p>
+        <p class="pub-authors">Ebrahimi M., Kelati A., Nkonoki E., Kondoro A., Rwegasira D., Ben Dhaou I., Taajamaa V., Tenhunen H.</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-1" data-year="2019" data-type="conf" data-pub-id="pub-2019-b" tabindex="0" role="button" aria-label="Click to view details: Entrepreneurial education natural sciences Tanzania" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-badge year">2019</span>
+        </div>
+        <h4>Promoting Innovation by Adding Entrepreneurial Education to a Natural Sciences Curriculum — Case Tanzania</h4>
+        <p class="pub-venue">IFIP Advances in Information and Communication Technology</p>
+        <p class="pub-authors">Taajamaa, Ville; Nkonoki, Emma; Järvi, Antero; Hooli, Lauri</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+      <article class="pub-card glass reveal reveal-delay-2" data-year="2019" data-type="conf" data-pub-id="pub-2019-c" tabindex="0" role="button" aria-label="Click to view details: Contextualising Innovation in Africa" aria-haspopup="dialog">
+        <div class="pub-badges">
+          <span class="pub-badge conf">Conference</span>
+          <span class="pub-badge year">2019</span>
+        </div>
+        <h4>Contextualising Innovation in Africa: Knowledge Modes and Actors in Local Innovation Development</h4>
+        <p class="pub-venue">IST-Africa 2019</p>
+        <p class="pub-authors">Hooli, L.; Jauhiainen, J.; Järvi, A.; Nkonoki, E.; Taajamaa, V.; Käyhkö, N.</p>
+        <span class="pub-link" aria-hidden="true">Click to explore →</span>
+      </article>
+
+    </div><!-- /pubs-grid -->
+  </div>
+</section>
+
+<!-- ═══ PUBLICATION POPUP ═══ -->
+<div class="pub-popup-backdrop" id="pub-popup-backdrop" aria-hidden="true"></div>
+<div id="pub-popup" role="dialog" aria-modal="true" aria-labelledby="pub-popup-title" aria-hidden="true">
+  <div class="pub-popup-header">
+    <span class="pub-popup-type-badge" id="pub-popup-type"></span>
+    <button class="pub-popup-close" id="pub-popup-close" aria-label="Close publication details">✕</button>
+  </div>
+  <h3 id="pub-popup-title"></h3>
+  <div class="pub-popup-section">
+    <strong>Summary &amp; Themes</strong>
+    <p id="pub-popup-summary"></p>
+    <div class="pub-popup-themes" id="pub-popup-themes"></div>
+  </div>
+  <div class="pub-popup-section">
+    <strong>Key Takeaways</strong>
+    <ul class="pub-popup-takeaways" id="pub-popup-takeaways"></ul>
+  </div>
+  <div class="pub-popup-section">
+    <strong>APA Citation</strong>
+    <p class="pub-popup-apa" id="pub-popup-apa"></p>
+  </div>
+  <div class="pub-popup-footer">
+    <a class="pub-popup-link" id="pub-popup-link" href="#" target="_blank" rel="noopener noreferrer">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View / Download
+    </a>
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Emma <span>Nkonoki</span></div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="research.html">Research</a>
+        <a href="resume.html">CV</a>
+        <a href="activities.html">Networks</a>
+        <a href="blog/index.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <p class="footer-copy">© 2025 Emma Nkonoki. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+const PUB_DATA = {
+  'pub-2026-a': {
+    type: 'Journal Article · 2026',
+    title: 'Inclusive Digital Learning: Teacher and Student Perspectives in East African TVET Contexts',
+    summary: 'Examines how teachers and students in East African TVET institutions experience digital inclusion. Surveys attitudes, infrastructure challenges, and the pedagogical shifts required as vocational education shifts toward digital delivery.',
+    themes: ['Digital Inclusion','TVET','East Africa','Teacher Perspectives','Student Engagement','EdTech Policy'],
+    takeaways: [
+      'Significant digital access gaps persist in TVET settings, particularly outside major cities.',
+      'Teacher attitudes toward technology are a stronger predictor of adoption than device availability.',
+      'Policy must address both physical infrastructure and digital pedagogy training in parallel.'
+    ],
+    apa: 'Nkonoki, E. (2026). Inclusive Digital Learning: Teacher and Student Perspectives in East African TVET Contexts. HAMK Pilkku. https://doi.org/10.63777/5441',
+    url: 'https://doi.org/10.63777/5441'
+  },
+  'pub-2026-b': {
+    type: 'Journal Article · 2026',
+    title: 'From Swahili to Screens: Overcoming Digital Literacy Obstacles in Tanzania',
+    summary: 'Investigates the digital literacy barriers facing Swahili-speaking learners in Tanzania as education and public services migrate to digital platforms. Highlights how language, prior education, and infrastructure intersect as compounding barriers.',
+    themes: ['Digital Literacy','Swahili Language','Tanzania','Barriers to E-learning','Language Equity','Rural Access'],
+    takeaways: [
+      'Language is a severely underestimated barrier — most digital tools default to English, alienating Swahili-first learners.',
+      'Mother-tongue digital literacy interventions show strong early results in pilot programmes.',
+      'Rural and peri-urban divides amplify existing inequalities; connectivity alone is not enough.'
+    ],
+    apa: 'Nkonoki, E., & Meena, W. (2026). From Swahili to Screens: Overcoming Digital Literacy Obstacles in Tanzania. HAMK Pilkku. https://doi.org/10.63777/fc8b',
+    url: 'https://doi.org/10.63777/fc8b'
+  },
+  'pub-review-c': {
+    type: 'Under Review · 2026',
+    title: "AI Entered the Chat: Is It Too Much Too Soon for East Africa's Classrooms?",
+    summary: "A critical examination of AI tool integration in East African classroom contexts, questioning whether the pace of AI adoption is outrunning the pedagogical, infrastructure, and equity readiness of the region's schools.",
+    themes: ['Artificial Intelligence','Education','East Africa','EdTech Equity','Classroom Readiness','AI Ethics'],
+    takeaways: [
+      'AI adoption in classrooms must be preceded by baseline digital literacy — skipping this step risks deepening inequality.',
+      'Teacher training is the critical bottleneck; AI tools require pedagogical re-orientation, not just technical onboarding.',
+      'Equity concerns demand context-sensitive deployment; tools optimised for Western classrooms often fail locally.'
+    ],
+    apa: 'Nkonoki, E. (under review). AI Entered the Chat: Is It Too Much Too Soon for East Africa\'s Classrooms? HAMK Pilkku.',
+    url: null
+  },
+  'pub-2025-a': {
+    type: 'Journal Article · 2025',
+    title: 'Exploring the Role of ICT in Empowering Grassroots Innovation and Entrepreneurship: A Cross-Sectional Study of Iringa Region in Tanzania',
+    summary: 'Cross-sectional study of how ICT tools — particularly mobile phones — enable grassroots entrepreneurs in the Iringa Region to access markets, coordinate supply chains, and participate in broader innovation ecosystems. Based on primary fieldwork with micro-entrepreneurs and hub actors.',
+    themes: ['ICT4D','Grassroots Entrepreneurship','Iringa','Tanzania','Mobile Technology','Innovation Ecosystems'],
+    takeaways: [
+      'Mobile phones are transformative for micro-entrepreneurs, enabling access to market information and customer networks.',
+      'Social and peer networks heavily mediate ICT adoption — trust is a precondition for technology uptake.',
+      'Connectivity and affordable data remain key barriers; low-literacy digital tools are under-developed.'
+    ],
+    apa: 'Nkonoki, E., Kateule, R., & Leppanen, V. (2025). Exploring the Role of ICT in Empowering Grassroots Innovation and Entrepreneurship: A Cross-Sectional Study of Iringa Region in Tanzania. The African Journal of Information Systems.',
+    url: 'https://digitalcommons.kennesaw.edu/cgi/viewcontent.cgi?article=2485&context=ajis'
+  },
+  'pub-2025-b': {
+    type: 'Conference Paper · 2025',
+    title: 'Exploring the Challenges of Growing Technology Startups: A Case of Silicon Dar',
+    summary: "Investigates the growth challenges faced by technology startups in Silicon Dar — Dar es Salaam's emerging tech hub — including funding gaps, talent shortages, market access barriers, and regulatory friction. Based on founder and ecosystem actor interviews.",
+    themes: ['Tech Startups','Silicon Dar','Tanzania','Startup Ecosystem','Growth Barriers','Entrepreneurship'],
+    takeaways: [
+      'Access to growth capital is the primary barrier — seed funding exists, but Series A-equivalent is nearly absent locally.',
+      'Mentorship networks and peer learning are underdeveloped; successful founders rarely pay it forward systematically.',
+      'Local market limitations push startups toward diaspora and pan-African partnerships for scale.'
+    ],
+    apa: 'Nkonoki, E., & Bakari, A. (2025). Exploring the Challenges of Growing Technology Startups: A Case of Silicon Dar. IST-Africa.',
+    url: 'https://www.researchgate.net/publication/393626054_Exploring_the_Challenges_of_Growing_Technology_Startups_a_Case_of_Silicon_Dar'
+  },
+  'pub-2025-c': {
+    type: 'PhD Dissertation · 2025',
+    title: 'Fostering Inclusive Innovations by Using ICT to Empower Grassroots Entrepreneurs in East Africa',
+    summary: 'Article dissertation synthesising six peer-reviewed articles on how ICT fosters inclusive innovation among low-income entrepreneurs in Tanzania, Kenya, and Rwanda. Combines qualitative fieldwork in innovation hubs, policy analysis, and case studies across Iringa, Silicon Dar, and Zanzibar.',
+    themes: ['ICT4D','Inclusive Innovation','Grassroots Entrepreneurship','East Africa','Innovation Ecosystems','NGOs','Policy'],
+    takeaways: [
+      'Mobile technology is a key enabler for grassroots entrepreneurs — even feature phones unlock significant economic agency.',
+      'Informal innovation hubs play a crucial bridging role between policy ambitions and grassroots realities.',
+      'Inclusive design of technology ecosystems requires active NGO and civil society participation.',
+      'Top-down policy rarely reaches the last mile without local intermediaries and community trust.'
+    ],
+    apa: 'Nkonoki, E. (2025). Fostering inclusive innovations by using ICT to empower grassroots entrepreneurs in East Africa [Doctoral dissertation, University of Turku]. https://urn.fi/URN:ISBN:978-952-02-0127-2',
+    url: 'https://www.utupub.fi/handle/10024/180449'
+  },
+  'pub-review-a': {
+    type: 'Under Review · 2025',
+    title: 'Advancing Innovation in Higher Learning Institutions: Case Studies and Best Practices',
+    summary: 'Comparative case studies examining how higher learning institutions across East Africa are cultivating innovation cultures, developing research-to-practice pipelines, and building productive industry partnerships. Draws on multi-institution fieldwork across Tanzania, Kenya, and Finland.',
+    themes: ['Higher Education','Innovation','East Africa','University-Industry Linkage','Case Studies','Best Practices'],
+    takeaways: [
+      'HEIs with dedicated innovation centres and clear IP frameworks consistently outperform peers in commercialisation.',
+      'Staff incentive structures that reward innovation (not just publication) are critical to culture change.',
+      'Cross-border Finland–East Africa partnerships multiply impact and bring complementary strengths.'
+    ],
+    apa: 'Nkonoki, E., Kateule, R., Machuve, J., & Leppanen, V. (under review). Advancing Innovation in Higher Learning Institutions: Case Studies and Best Practices.',
+    url: null
+  },
+  'pub-review-b': {
+    type: 'Under Review · 2025',
+    title: 'Exploring the Growth of Software Startups in the Emerging Technology District of Dar es Salaam',
+    summary: "Examines the ecosystem conditions enabling or constraining software startup growth in Dar es Salaam's technology district. Analyses funding flows, talent pipelines, regulatory frameworks, and community dynamics through founder interviews and ecosystem mapping.",
+    themes: ['Software Startups','Dar es Salaam','Technology District','Startup Ecosystem','Growth','East Africa'],
+    takeaways: [
+      'Regulatory ambiguity around data, fintech, and IP slows formalisation of software ventures.',
+      'Informal peer networks remain the most reliable talent-sourcing channel — formal recruitment is rare.',
+      'Post-2020 digital infrastructure investment has accelerated startup formation, but support structures lag.'
+    ],
+    apa: 'Nkonoki, E., Makundi, H., & Leppanen, V. (under review). Exploring the Growth of Software Startups in the Emerging Technology District of Dar es Salaam.',
+    url: null
+  },
+  'pub-2024-a': {
+    type: 'Journal Article · 2024',
+    title: 'Inclusive Innovation Processes in Tanzania: From National Policies to Local Practices in Innovation Hubs',
+    summary: "Analyses the gap between Tanzania's national innovation policy agenda and on-the-ground realities in local innovation hubs. Fieldwork spans multiple hub types — from urban tech incubators to rural community hubs — highlighting the role of intermediary organisations.",
+    themes: ['Innovation Policy','Tanzania','Innovation Hubs','Grassroots','Implementation Gap','Inclusion'],
+    takeaways: [
+      'Top-down innovation policies rarely reach grassroots actors without local intermediaries; the implementation gap is substantial.',
+      'Hubs vary enormously in quality, mandate, and support — lumping them under one label obscures critical differences.',
+      'Women and rural entrepreneurs remain systematically excluded from formal innovation support structures.'
+    ],
+    apa: 'Hooli, L., Nkonoki, E., & Leppanen, V. (2024). Inclusive innovation processes in Tanzania: From national policies to local practices in innovation hubs. African Journal of Innovation, Science, Technology and Development. https://doi.org/10.1080/20421338.2024.2398835',
+    url: 'https://doi.org/10.1080/20421338.2024.2398835'
+  },
+  'pub-2024-b': {
+    type: 'Journal Article · 2024',
+    title: 'A Qualitative Assessment of the Role of Mobile Phones in Motorcycle Taxi Service in Dar es Salaam',
+    summary: 'Qualitative study of how mobile phone adoption has transformed the motorcycle taxi (piki piki) industry in Dar es Salaam — from driver recruitment and customer communication to digital payment adoption and safety practices.',
+    themes: ['Mobile Phones','Motorcycle Taxi','Dar es Salaam','Urban Transport','Informal Economy','Tanzania'],
+    takeaways: [
+      'Mobile phones are now integral to boda boda operations; drivers without smartphones face growing competitive disadvantage.',
+      'Digital payment adoption is growing but uneven — cash remains dominant in outer neighbourhoods.',
+      'App-based platforms significantly improve passenger safety perception and driver accountability.'
+    ],
+    apa: 'Nkonoki, E., & Hamza, V. (2024). A qualitative assessment of the role of mobile phones in motorcycle taxi service in Dar es Salaam. Journal of Transportation Planning and Technology. https://doi.org/10.1080/03081060.2024.2384530',
+    url: 'https://doi.org/10.1080/03081060.2024.2384530'
+  },
+  'pub-2024-c': {
+    type: 'Conference Paper · 2024',
+    title: 'The Contribution of Higher Learning Institutions in the Geospatial Ecosystem in Zanzibar: Current Situation and Future Direction',
+    summary: "Assesses how Zanzibar's higher education institutions are contributing to — or conspicuously absent from — the development of a geospatial data ecosystem. Combines document analysis with practitioner interviews to map current capacity and chart a path forward.",
+    themes: ['Geospatial Data','Zanzibar','Higher Education','GIS','Ecosystem Development','Tanzania'],
+    takeaways: [
+      'HEI engagement in geospatial data production and management is nascent, with limited structured programmes.',
+      'Curriculum reform aligned with regional geospatial data needs is urgently required.',
+      'Public-private-academic partnerships could fast-track ecosystem development if coordination barriers are addressed.'
+    ],
+    apa: 'Bakar, A., Hamad, M., Nkonoki, E., & Khatib, M. (2024). The Contribution of Higher Learning Institutions in the Geospatial Ecosystem in Zanzibar. ICERI 2024 Proceedings.',
+    url: 'https://research.utu.fi/converis/portal/detail/Publication/477111708?lang=fi_FI'
+  },
+  'pub-2024-d': {
+    type: 'Conference Paper · 2024',
+    title: 'Towards a Multi-Competence Based Learning Internship Model: A Problem-Based Approach',
+    summary: 'Presents a multi-competence internship model grounded in problem-based learning (PBL), developed to better prepare TVET and higher education students for industry realities in East Africa. Piloted in a collaborative programme between universities and industry partners.',
+    themes: ['Internship Model','Problem-Based Learning','TVET','Multi-Competence','Higher Education','Curriculum Design'],
+    takeaways: [
+      'Traditional internship models misalign with industry expectations — competence breadth matters as much as depth.',
+      'PBL frameworks improve student industry-readiness and reduce the first-job learning curve substantially.',
+      'Sustained collaboration between HEIs and industry is essential — one-off partnerships yield limited results.'
+    ],
+    apa: 'Bakari, A., Nkonoki, E., Yahya, B., Khatib, M., & Hamad, M. (2024). Towards a Multi-Competence Based Learning Internship Model: A Problem-Based Approach. ICL2024. Springer. https://link.springer.com/chapter/10.1007/978-3-031-83523-0_29',
+    url: 'https://link.springer.com/chapter/10.1007/978-3-031-83523-0_29'
+  },
+  'pub-2021-a': {
+    type: 'Book Chapter · 2021',
+    title: 'Evolution of the Tanzanian Innovation Ecosystem',
+    summary: "Traces the historical development of Tanzania's innovation ecosystem from early post-independence policy initiatives through the emergence of mobile money, tech hubs, and startup communities, situating it within broader African innovation trajectories.",
+    themes: ['Tanzania','Innovation Ecosystem','History','Tech Hubs','Policy','East Africa','Mobile Money'],
+    takeaways: [
+      "Tanzania's innovation ecosystem has grown rapidly since 2010, driven by mobile connectivity and urbanisation.",
+      'Mobile money was the catalytic innovation that enabled subsequent fintech and agri-tech layers.',
+      'Policy coherence is improving, but women and rural innovators remain structurally underserved.'
+    ],
+    apa: 'Nkonoki, E. (2021). Evolution of the Tanzanian Innovation Ecosystem. In Business to Business Marketing: How to Understand and Succeed in Business.',
+    url: 'https://www.scribd.com/document/659636049/business-to-business-marketing-how-to-understand-1-annas-archive-'
+  },
+  'pub-2019-a': {
+    type: 'Conference Paper · 2019',
+    title: "Creation of CERID: Challenge, Education, Research, Innovation, and Deployment 'In the Context of Smart MicroGrid'",
+    summary: 'Presents the design rationale behind CERID — a challenge-based learning approach combining education, research, and real-world deployment in the context of smart microgrid technology for sub-Saharan African communities. Developed through multi-institutional collaboration.',
+    themes: ['Smart MicroGrid','Challenge-Based Learning','CERID','Energy','East Africa','Innovation Framework'],
+    takeaways: [
+      'Challenge-based learning frameworks accelerate practical technology deployment compared to lecture-only methods.',
+      'Interdisciplinary student teams consistently outperform single-discipline groups in complex engineering challenges.',
+      'Community buy-in and local co-design are essential for energy projects to achieve sustained adoption.'
+    ],
+    apa: "Ebrahimi, M., Kelati, A., Nkonoki, E., Kondoro, A., Rwegasira, D., Ben Dhaou, I., Taajamaa, V., & Tenhunen, H. (2019). Creation of CERID. IST-Africa 2019.",
+    url: null
+  },
+  'pub-2019-b': {
+    type: 'Conference Paper · 2019',
+    title: 'Promoting Innovation by Adding Entrepreneurial Education to a Natural Sciences Curriculum — Case Tanzania',
+    summary: 'Case study of integrating entrepreneurial thinking into natural sciences curricula at a Tanzanian university. Evaluates student learning outcomes, faculty experiences, and the systemic barriers to making such integration sustainable within traditional academic structures.',
+    themes: ['Entrepreneurial Education','STEM','Tanzania','Curriculum Integration','Higher Education','Innovation Culture'],
+    takeaways: [
+      'Entrepreneurship can be meaningfully embedded in science curricula with modest resource additions — modular design is key.',
+      'Students report increased self-efficacy and venture intention after entrepreneurship-integrated modules.',
+      'Faculty support and departmental buy-in are the strongest predictors of programme sustainability.'
+    ],
+    apa: 'Taajamaa, V., Nkonoki, E., Jarvi, A., & Hooli, L. (2019). Promoting Innovation by Adding Entrepreneurial Education to a Natural Sciences Curriculum — Case Tanzania. IFIP Advances in Information and Communication Technology.',
+    url: null
+  },
+  'pub-2019-c': {
+    type: 'Conference Paper · 2019',
+    title: 'Contextualising Innovation in Africa: Knowledge Modes and Actors in Local Innovation Development',
+    summary: 'Challenges linear, Western-centric models of innovation by examining diverse knowledge modes — tacit, local, scientific, traditional — and actor networks shaping local innovation development in African contexts. Argues for contextualised frameworks that centre African epistemic traditions.',
+    themes: ['Innovation Theory','Africa','Local Knowledge','Innovation Actors','Context','Localisation','Epistemology'],
+    takeaways: [
+      'Innovation in Africa is highly context-dependent — universal models consistently underperform locally adapted ones.',
+      'Informal and tacit knowledge networks are undervalued in policy and programme design.',
+      'Bridging local and scientific knowledge is both ethically important and practically essential for effective programmes.'
+    ],
+    apa: 'Hooli, L., Jauhiainen, J., Jarvi, A., Nkonoki, E., Taajamaa, V., & Kayhko, N. (2019). Contextualising Innovation in Africa: Knowledge Modes and Actors in Local Innovation Development. IST-Africa 2019.',
+    url: null
+  }
+};
+
+/* ── POPUP INTERACTION ─────────────────────────────────── */
+(function () {
+  const backdrop  = document.getElementById('pub-popup-backdrop');
+  const popup     = document.getElementById('pub-popup');
+  const closeBtn  = document.getElementById('pub-popup-close');
+  const elType     = document.getElementById('pub-popup-type');
+  const elTitle    = document.getElementById('pub-popup-title');
+  const elSummary  = document.getElementById('pub-popup-summary');
+  const elThemes   = document.getElementById('pub-popup-themes');
+  const elTakes    = document.getElementById('pub-popup-takeaways');
+  const elApa      = document.getElementById('pub-popup-apa');
+  const elLink     = document.getElementById('pub-popup-link');
+  let lastFocused  = null;
+
+  function openPopup(pubId) {
+    const d = PUB_DATA[pubId];
+    if (!d) return;
+    elType.textContent    = d.type;
+    elTitle.textContent   = d.title;
+    elSummary.textContent = d.summary;
+    elApa.textContent     = d.apa;
+    elThemes.innerHTML = d.themes.map(t => '<span class="pub-popup-theme-tag">' + t + '</span>').join('');
+    elTakes.innerHTML  = d.takeaways.map(t => '<li>' + t + '</li>').join('');
+    if (d.url) { elLink.href = d.url; elLink.classList.remove('hidden'); }
+    else        { elLink.href = '#';   elLink.classList.add('hidden'); }
+    backdrop.classList.add('active');    backdrop.removeAttribute('aria-hidden');
+    popup.classList.add('active');       popup.removeAttribute('aria-hidden');
+    popup.scrollTop = 0;
+    setTimeout(function(){ closeBtn.focus(); }, 50);
+  }
+
+  function closePopup() {
+    backdrop.classList.remove('active'); backdrop.setAttribute('aria-hidden','true');
+    popup.classList.remove('active');    popup.setAttribute('aria-hidden','true');
+    if (lastFocused) lastFocused.focus();
+  }
+
+  var grid = document.querySelector('.pubs-grid');
+  if (grid) {
+    grid.addEventListener('click', function(e){
+      var card = e.target.closest('[data-pub-id]');
+      if (!card) return;
+      lastFocused = card;
+      openPopup(card.dataset.pubId);
+    });
+    grid.addEventListener('keydown', function(e){
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var card = e.target.closest('[data-pub-id]');
+      if (!card) return;
+      e.preventDefault();
+      lastFocused = card;
+      openPopup(card.dataset.pubId);
+    });
+  }
+
+  closeBtn.addEventListener('click', closePopup);
+  backdrop.addEventListener('click', closePopup);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && popup.classList.contains('active')) closePopup();
+  });
+
+  popup.addEventListener('keydown', function(e){
+    if (e.key !== 'Tab') return;
+    var focusable = popup.querySelectorAll('button, a:not(.hidden)');
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
+})();
+</script>
+</body>
+</html>
