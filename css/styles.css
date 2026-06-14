@@ -322,6 +322,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   z-index: 199;
   flex-direction: column;
   gap: 0.5rem;
+  max-height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
 }
 
 .mobile-menu.open { display: flex; }
@@ -1099,18 +1101,51 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   line-height: 1.5;
 }
 
-/* Colour variants */
-.skill-cell.accent {
-  background: var(--accent-glow);
-  border-color: rgba(82,183,136,0.35);
-  color: var(--accent);
+/* Colour palette — 5 hues + gradients */
+/* Green (brand) */
+.skill-cell.sk-green {
+  background: linear-gradient(135deg, #1e8a5e 0%, #52b788 100%);
+  border-color: transparent; color: #fff;
 }
-.skill-cell.accent small { color: var(--accent); opacity: 0.8; }
-.skill-cell.accent-soft {
-  background: rgba(82,183,136,0.07);
-  border-color: rgba(82,183,136,0.2);
-  color: var(--text);
+.skill-cell.sk-green small { color: rgba(255,255,255,0.8); }
+
+/* Amber / warm orange */
+.skill-cell.sk-amber {
+  background: linear-gradient(135deg, #c96a1a 0%, #f4a261 100%);
+  border-color: transparent; color: #fff;
 }
+.skill-cell.sk-amber small { color: rgba(255,255,255,0.8); }
+
+/* Ocean blue */
+.skill-cell.sk-blue {
+  background: linear-gradient(135deg, #1a5f8a 0%, #4899c5 100%);
+  border-color: transparent; color: #fff;
+}
+.skill-cell.sk-blue small { color: rgba(255,255,255,0.8); }
+
+/* Coral / rose */
+.skill-cell.sk-coral {
+  background: linear-gradient(135deg, #b04a52 0%, #e07b80 100%);
+  border-color: transparent; color: #fff;
+}
+.skill-cell.sk-coral small { color: rgba(255,255,255,0.8); }
+
+/* Purple */
+.skill-cell.sk-purple {
+  background: linear-gradient(135deg, #5a3fa0 0%, #9479d4 100%);
+  border-color: transparent; color: #fff;
+}
+.skill-cell.sk-purple small { color: rgba(255,255,255,0.8); }
+
+/* Soft flat hues for 1×1 cells */
+.skill-cell.sk-slate  { background: rgba(100,116,139,0.12); border-color: rgba(100,116,139,0.25); color: var(--text); }
+.skill-cell.sk-sand   { background: rgba(194,154,108,0.15); border-color: rgba(194,154,108,0.3);  color: var(--text); }
+.skill-cell.sk-rose   { background: rgba(190, 80, 100,0.10); border-color: rgba(190,80,100,0.22); color: var(--text); }
+.skill-cell.sk-sky    { background: rgba(56,130,200,0.10);  border-color: rgba(56,130,200,0.22);  color: var(--text); }
+.skill-cell.sk-mint   { background: rgba(52,183,150,0.10);  border-color: rgba(52,183,150,0.22);  color: var(--text); }
+
+/* Keep hover effect readable on all */
+.skill-cell[class*="sk-"]:hover { opacity: 0.88; transform: scale(1.02); }
 
 /* Responsive */
 @media (max-width: 600px) {
